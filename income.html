@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Web application that will help you plan your home budget">
+  <meta name="keywords" content="finance, assistant, help, home, budget, money, save">
+  <meta name="author" content="Tomasz Jóźwiak">
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="main.css">
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  
+</head>
+<body>
+
+	<div class="jumbotron">
+		<h1><a href="index.html">FINANCE ASSISTANT</a></h1> 
+	</div>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-center">
+        <li><a href="income.html">Dodaj przychód</a></li>
+        <li><a href="expense.html">Dodaj wydatek</a></li>
+		<li><a href="balance.html">Przeglądaj bilans</a></li>
+        <li><a href="settings.html">Ustawienia</a></li>
+        <li><a href="logout.html">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+  
+<div class="container-fluid text-center">    
+  <div class="row content">
+    <div class="col-sm-2 sidenav">
+      <p><a href="income.html">Dodaj przychód</a></p>
+      <p><a href="expense.html">Dodaj wydatek</a></p>
+	  <p><a href="balance.html">Przeglądaj bilans</a></p>
+      <p><a href="settings.html">Ustawienia</a></p>
+	  <p><a href="logout.html">Logout</a></p>
+    </div>
+    <div class="col-sm-8 text-left" style="text-align: center"> 
+		<article>
+			<header>
+				<h1>Dodaj przychód</h1>	
+			</header>
+			
+			<p>Wpisz poniższe dane, aby dodać nowy przychód</p>
+				
+				<label for="amount">Kwota: </label>
+				<input class="number" id="amount" type="amount">
+				<label for="date">Data: </label>
+				<input class="date" id="date" type="date">
+				
+				<p style="margin-top: 30px;">Kategoria:</p>
+				
+				<div class="radio">
+				  <label><input type="radio" value="1" name="income_type">Wynagrodzenia</label>
+				</div>
+				<div class="radio">
+				  <label><input type="radio" value="2" name="income_type">Odsetki bankowe</label>
+				</div>
+				<div class="radio">
+				  <label><input type="radio" value="3" name="income_type">Sprzedaż na allegro</label>
+				</div>
+				<div class="radio">
+				  <label><input type="radio" value="4" name="income_type">Inne</label>
+				</div>
+				
+				<div class="form-group">
+				  <label for="comment">Komentarz:</label>
+				  <textarea class="form-control" rows="3" id="comment"></textarea>
+				</div>
+							
+			<div class="form-group row" style="margin-top: 10px;">
+				<input type="submit" class="btn btn-default" value="Dodaj">
+				<input type="button" class="btn btn-default" value="Cancel">
+			</div>
+					
+		</article>
+    </div>
+    <div class="col-sm-2 sidenav">
+      <div class="well">
+        <p>ADS</p>
+      </div>
+      <div class="well">
+        <p>ADS</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="container-fluid text-center">
+  <p>Created by Tomasz Jozwiak</p>
+</footer>
+
+</body>
+</html>
