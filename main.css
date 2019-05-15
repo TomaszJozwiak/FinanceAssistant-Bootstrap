@@ -1,9 +1,19 @@
+body
+{
+	background-color: white;
+	margin: 0;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 20px;
+}
+
 .navbar 
 {
    margin-bottom: 0;
    border-radius: 0;
+   border: 0;
+   background-color: #FF9900;
 }
-    
+ 
 .row.content 
 {
 	height: 450px
@@ -16,7 +26,6 @@
 	height: 100%;
 }
     
-
 footer 
 {
 	background-color: #555;
@@ -39,6 +48,7 @@ footer
 	text-align: center;
 	margin: 0 px;
 	margin-bottom: 0px;
+	background-color: white;
 }
 	
 .navbar-nav.navbar-center 
@@ -48,14 +58,32 @@ footer
     transform: translatex(-50%);
 }
 
-a
+.navbar-nav.navbar-center a:hover
 {
-	text-decoration: none;
-	color: black;
+background-color: white;
 }
 
-a:hover
+.jumbotron a
 {
 	text-decoration: none;
-	color: black;
+	color: #FF9900;
+}
+
+.jumbotron a:hover
+{
+	text-decoration: none;
+	color: #FF9900;
+}
+
+.navbar a
+{
+	text-decoration: none;
+	color: white;
+}
+
+.navbar a:hover
+{
+	text-decoration: none;
+	color: #FF9900;
+	background-color: white;
 }
