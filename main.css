@@ -2,7 +2,7 @@ body
 {
 	background-color: white;
 	margin: 0;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
     font-size: 20px;
 }
 
@@ -13,54 +13,28 @@ body
    border: 0;
    background-color: #FF9900;
 }
- 
-.row.content 
+
+.jumbotron 
 {
-	height: 450px
-}
-    
- .sidenav
-{
-	padding-top: 20px;
-	background-color: #f1f1f1;
-	height: 100%;
-}
-    
-footer 
-{
-	background-color: #555;
-	color: white;
-	padding: 15px;
-}
-    
-   @media screen and (max-width: 767px)
-{
-  .sidenav 
-{
-	height: auto;
-	padding: 15px;
-}
-  .row.content {height:auto;} 
-}
-	
-.jumbotron
-{
+	padding-top: 10px;
+	padding-bottom: 10px;
 	text-align: center;
 	margin: 0 px;
 	margin-bottom: 0px;
 	background-color: white;
 }
 	
-.navbar-nav.navbar-center 
+.nav-pills.navbar-center 
 {
-    position: absolute;
-    left: 50%;
-    transform: translatex(-50%);
+	height: 60px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-.navbar-nav.navbar-center a:hover
+.nav-pills.navbar-center a:hover
 {
-background-color: white;
+	background-color: white;
 }
 
 .jumbotron a
@@ -86,4 +60,17 @@ background-color: white;
 	text-decoration: none;
 	color: #FF9900;
 	background-color: white;
+}
+
+.btn.btn-warning.btn-block.custom-btn
+{
+	background-color: #FF9900;
+}
+
+.btn.btn-warning.btn-block.custom-btn:hover
+{
+	border: 10%;
+	background-color: white;
+	color: #FF9900;
+	border-color: #FF9900;
 }
