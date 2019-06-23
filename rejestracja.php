@@ -8,7 +8,7 @@
 		$wszystko_OK=true;
 		
 		//Sprawdź poprawność nickname'a
-		$nick = $_POST['name'];
+		$name = $_POST['name'];
 		
 		// Sprawdź poprawność adresu email
 		$email = $_POST['email'];
@@ -36,7 +36,58 @@
 			$_SESSION['e_password']="Podane hasła nie są identyczne!";
 		}	
 
-		$haslo_hash = password_hash($password, PASSWORD_DEFAULT);
+		$password_hash = password_hash($password, PASSWORD_DEFAULT);
+	
+		require_once "connect.php";
+		mysqli_report(MYSQLI_REPORT_STRICT);
+	
+		try 
+		{
+			$polaczenie = new mysqli($host, $db_user, $db_password, $db_name);
+			if ($polaczenie->connect_errno!=0)
+			{
+				throw new Exception(mysqli_connect_errno());
+			}
+			else
+			{
+				//Czy email już istnieje?
+				$rezultat = $polaczenie->query("SELECT id FROM users WHERE email='$email'");
+				
+				if (!$rezultat) throw new Exception($polaczenie->error);
+				
+				$ile_takich_maili = $rezultat->num_rows;
+				if($ile_takich_maili>0)
+				{
+					$wszystko_OK=false;
+					$_SESSION['e_email']="Istnieje już konto przypisane do tego adresu e-mail!";
+				}		
+
+				if ($wszystko_OK==true)
+				{
+					//Hurra, wszystkie testy zaliczone, dodajemy gracza do bazy
+					
+					if ($polaczenie->query("INSERT INTO users VALUES (NULL, '$name', '$password_hash', '$email')"))
+					{
+						$_SESSION['udanarejestracja']=true;
+						header('Location: logowanie.php');
+					}
+					else
+					{
+						throw new Exception($polaczenie->error);
+					}
+					
+				}
+				
+				$polaczenie->close();
+			}
+			
+		}
+		catch(Exception $e)
+		{
+			echo '<span style="color:red;">Błąd serwera! Przepraszamy za niedogodności i prosimy o rejestrację w innym terminie!</span>';
+			echo '<br />Informacja developerska: '.$e;
+		}
+		
 	}
 ?>
 
@@ -79,7 +130,7 @@
 					</div>
 					<div class="collapse navbar-collapse" id="mainmenu">
 						<ul class="nav nav-pills navbar-center">
-							<li><a href="logowanie.html"><span class="glyphicon glyphicon-log-in"></span> Logowanie </a></li>
+							<li><a href="logowanie.php"><span class="glyphicon glyphicon-log-in"></span> Logowanie </a></li>
 							<li><a href="rejestracja.php"><span class="glyphicon glyphicon-hand-right"></span> Rejestracja</a></li>
 						</ul>
 					</div>

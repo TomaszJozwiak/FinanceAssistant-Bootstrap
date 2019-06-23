@@ -1,3 +1,17 @@
+<?php
+
+	session_start();
+	
+	if (isset($_SESSION['udanarejestracja']))
+	{
+		$wiadomosc = 'Gratulacje, rejestracja zakończyła się sukcesem';
+		unset($_SESSION['udanarejestracja']);
+	}
+	
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -37,7 +51,7 @@
 				</div>
 				<div class="collapse navbar-collapse" id="mainmenu">
 					<ul class="nav nav-pills navbar-center">
-						<li><a href="logowanie.html"><span class="glyphicon glyphicon-log-in"></span> Logowanie </a></li>
+						<li><a href="logowanie.php"><span class="glyphicon glyphicon-log-in"></span> Logowanie </a></li>
 						<li><a href="rejestracja.php"><span class="glyphicon glyphicon-hand-right"></span> Rejestracja</a></li>
 					</ul>
 				</div>
@@ -50,6 +64,14 @@
 					<div class="col-sm-6 col-sm-offset-3"> 
 						<article>
 							<h1><b>Logowanie</b></h1>	
+							
+								<?php
+									if (isset($wiadomosc))
+									{
+											echo '<div style="color: green;">'.$wiadomosc.'</div>';
+											unset($wiadomosc);
+									}
+								?>
 												
 							<p>Wpisz poniższe dane, aby się zalogować</p></br>
 													
