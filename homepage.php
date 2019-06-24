@@ -22,7 +22,7 @@
 	
 		<header>
 			<div class="jumbotron">
-				<h1><b><a href="index.html"> <img src="img/saving-pig.png"  width="100w"height="100vw" alt="brand-pig" >  FINANCE ASSISTANT </b><i><p>Twoj domowy doradca oszczędzania</p></i></a></h1> 
+				<h1><b><a href="index.php"> <img src="img/saving-pig.png"  width="100w"height="100vw" alt="brand-pig" >  FINANCE ASSISTANT </b><i><p>Twoj domowy doradca oszczędzania</p></i></a></h1> 
 			</div>
 			
 			<nav class="navbar">
@@ -37,7 +37,7 @@
 				</div>
 				<div class="collapse navbar-collapse" id="mainmenu">
 					<ul class="nav nav-pills navbar-center">
-						<li><a href="homepage.html"><span class="glyphicon glyphicon-home"></span> Strona główna </a></li>
+						<li><a href="homepage.php"><span class="glyphicon glyphicon-home"></span> Strona główna </a></li>
 						<li><a href="income.html"><span class="glyphicon glyphicon-plus"></span> Dodaj przychód </a></li>
 						<li><a href="expense.html"><span class="glyphicon glyphicon-minus"></span> Dodaj wydatek </a></li>
 						<li><a href="balance.html"><span class="glyphicon glyphicon-stats"></span> Przeglądaj bilans </a></li>
@@ -55,9 +55,20 @@
 						<img src="img/money.jpg" width="100%"height="100%" class="img-fluid" style="padding-top: 20px" alt="money">
 					</div>
 					<div class="col-sm-5"> 
-						</br><h1><b>Udało Ci się zalogować!</b></h1><br/><br/>
+
+						</br><h1><b><?php		
+								session_start();
 							
-						<p>Teraz możesz się cieszyć z oszczędzania!</p></br></br>
+								if (isset($_SESSION['user']))
+								{
+										echo 'Witaj '.$_SESSION['user'].'!';
+										unset($_SESSION['udanarejestracja']);
+								}
+							?>
+						</b></h1>
+						<h1><b>Udało Ci się zalogować!</b></h1><br/><br/>
+							
+						<p>Teraz możesz się cieszyć z oszczędzania!</p></br>
 						<p>Wybierz jedną z opcji z górnego menu</p>
 								
 					</div>

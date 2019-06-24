@@ -4,13 +4,10 @@
 	
 	if (isset($_POST['email']))
 	{
-		//Udana walidacja? Załóżmy, że tak!
 		$wszystko_OK=true;
 		
-		//Sprawdź poprawność nickname'a
 		$name = $_POST['name'];
 		
-		// Sprawdź poprawność adresu email
 		$email = $_POST['email'];
 		$emailB = filter_var($email, FILTER_SANITIZE_EMAIL);
 		
@@ -20,7 +17,6 @@
 			$_SESSION['e_email']="Podaj poprawny adres e-mail!";
 		}
 		
-		//Sprawdź poprawność hasła
 		$password = $_POST['password'];
 		$repassword = $_POST['repassword'];
 		
@@ -50,7 +46,6 @@
 			}
 			else
 			{
-				//Czy email już istnieje?
 				$rezultat = $polaczenie->query("SELECT id FROM users WHERE email='$email'");
 				
 				if (!$rezultat) throw new Exception($polaczenie->error);
@@ -64,7 +59,6 @@
 
 				if ($wszystko_OK==true)
 				{
-					//Hurra, wszystkie testy zaliczone, dodajemy gracza do bazy
 					
 					if ($polaczenie->query("INSERT INTO users VALUES (NULL, '$name', '$password_hash', '$email')"))
 					{
@@ -77,17 +71,14 @@
 					}
 					
 				}
-				
 				$polaczenie->close();
 			}
-			
 		}
 		catch(Exception $e)
 		{
 			echo '<span style="color:red;">Błąd serwera! Przepraszamy za niedogodności i prosimy o rejestrację w innym terminie!</span>';
 			echo '<br />Informacja developerska: '.$e;
 		}
-		
 	}
 ?>
 
@@ -115,7 +106,7 @@
 		
 			<header>
 				<div class="jumbotron">
-					<h1><b><a href="index.html"> <img src="img/saving-pig.png"  width="100w"height="100vw" alt="brand-pig" >  FINANCE ASSISTANT </b><i><p>Twoj domowy doradca oszczędzania</p></i></a></h1> 
+					<h1><b><a href="index.php"> <img src="img/saving-pig.png"  width="100w"height="100vw" alt="brand-pig" >  FINANCE ASSISTANT </b><i><p>Twoj domowy doradca oszczędzania</p></i></a></h1> 
 				</div>
 				
 				<nav class="navbar">
@@ -157,13 +148,13 @@
 										</div>
 										<div class="form-group">
 											<label for="email">Email:
-													<?php
-														if (isset($_SESSION['e_email']))
-															{
-																echo '<div style="color: red;">'.$_SESSION['e_email'].'</div>';
-																unset($_SESSION['e_email']);
-															}
-													?></label>
+												<?php
+													if (isset($_SESSION['e_email']))
+														{
+															echo '<div style="color: red;">'.$_SESSION['e_email'].'</div>';
+															unset($_SESSION['e_email']);
+														}
+												?></label>
 											<div class="input-group">
 												<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
 												<input id="email" type="text" class="form-control" name="email" placeholder="Email">

@@ -2,15 +2,82 @@
 
 	session_start();
 	
-	if (isset($_SESSION['udanarejestracja']))
+	if ((isset($_POST['email'])) || (isset($_POST['password'])))
 	{
-		$wiadomosc = 'Gratulacje, rejestracja zakończyła się sukcesem';
-		unset($_SESSION['udanarejestracja']);
-	}
-	
+		$email = $_POST['email'];
+		$password = $_POST['password'];		
+
+		$emailB = filter_var($email, FILTER_SANITIZE_EMAIL);
+		
+		if ((filter_var($emailB, FILTER_VALIDATE_EMAIL)==false) || ($emailB!=$email))
+		{
+			$wszystko_OK=false;
+			$_SESSION['e_email']="Podaj poprawny adres e-mail!";
+		}
+
+		if ((strlen($password)<6) || (strlen($password)>20))
+			{
+				$wszystko_OK=false;
+				$_SESSION['e_password']="Hasło musi posiadać od 6 do 20 znaków!";
+			}
+
+			require_once "connect.php";
+			mysqli_report(MYSQLI_REPORT_STRICT);
+					
+		try 
+		{
+			$polaczenie = new mysqli($host, $db_user, $db_password, $db_name);
+			
+			if ($polaczenie->connect_errno!=0)
+			{
+				throw new Exception(mysqli_connect_errno());
+			}
+			else
+			{
+				if ($rezultat = $polaczenie->query(
+				sprintf("SELECT * FROM users WHERE email='%s'",
+				mysqli_real_escape_string($polaczenie,$email))))
+				{
+					$users_number = $rezultat->num_rows;
+					if($users_number>0)
+					{
+						$wiersz = $rezultat->fetch_assoc();
+						
+						if (password_verify($password, $wiersz['password']))
+						{
+							$_SESSION['zalogowany'] = true;
+							$_SESSION['id'] = $wiersz['id'];
+							$_SESSION['user'] = $wiersz['username'];
+							$_SESSION['email'] = $wiersz['email'];
+							
+							unset($_SESSION['blad']);
+							$rezultat->free_result();
+							header('Location: homepage.php');
+						}
+						else 
+						{
+							$_SESSION['e_password'] = 'Niepoprawne hasło';
+						}
+					} 
+					else 
+					{
+						$_SESSION['e_email'] = 'Nie ma takiego użytkownika w bazie. Zarejestruj konto!';
+					}
+				}
+				else
+				{
+					throw new Exception($polaczenie->error);
+				}
+				$polaczenie->close();
+			}
+		}
+		catch(Exception $e)
+		{
+			echo '<span style="color:red;">Błąd serwera! Przepraszamy za niedogodności i prosimy o wizytę w innym terminie!</span>';
+			echo '<br />Informacja developerska: '.$e;
+		}
+	}		
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -36,7 +103,7 @@
 	
 		<header>
 			<div class="jumbotron">
-				<h1><b><a href="index.html"> <img src="img/saving-pig.png"  width="100w"height="100vw" alt="brand-pig" >  FINANCE ASSISTANT </b><i><p>Twoj domowy doradca oszczędzania</p></i></a></h1> 
+				<h1><b><a href="index.php"> <img src="img/saving-pig.png"  width="100w"height="100vw" alt="brand-pig" >  FINANCE ASSISTANT </b><i><p>Twoj domowy doradca oszczędzania</p></i></a></h1> 
 			</div>
 			
 			<nav class="navbar">
@@ -65,22 +132,31 @@
 						<article>
 							<h1><b>Logowanie</b></h1>	
 							
-								<?php
-									if (isset($wiadomosc))
+								<?php					
+									if (isset($_SESSION['udanarejestracja']))
 									{
-											echo '<div style="color: green;">'.$wiadomosc.'</div>';
-											unset($wiadomosc);
+											echo '<div style="color: limegreen;">'.'Gratulacje, rejestracja zakończyła się sukcesem'.'</div>';
+											unset($_SESSION['udanarejestracja']);
 									}
 								?>
 												
 							<p>Wpisz poniższe dane, aby się zalogować</p></br>
-													
+											
+							<form method="post">
+											
 								<div class="form-group">
 									<label for="email">Email:</label>
 									<div class="input-group">
 										<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-										<input id="email" type="text" class="form-control" name="email" placeholder="Email">
+										<input id="email" type="text" class="form-control" name="email" placeholder="Email">	
 									 </div>
+										<?php
+												if (isset($_SESSION['e_email']))
+													{
+														echo '<div style="color: red;">'.$_SESSION['e_email'].'</div>';
+														unset($_SESSION['e_email']);
+													}
+											?>
 								</div>
 								<div class="form-group">
 									<label for="password">Hasło:</label>
@@ -88,15 +164,24 @@
 											<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
 											<input id="password" type="password" class="form-control" name="password" placeholder="Hasło">
 									</div>
+										 <?php
+												if (isset($_SESSION['e_password']))
+													{
+														echo '<div style="color: red;">'.$_SESSION['e_password'].'</div>';
+														unset($_SESSION['e_password']);
+													}
+											?>		
 								</div></br>			
 								<div class="form-group row d-inline-block">
 									<div class="col-sm-6">
-										<button type="button" class="btn btn-success btn-block"><b><span class="glyphicon glyphicon-ok"></span> Logowanie</b></button>
+										<button type="submit" class="btn btn-success btn-block"><b><span class="glyphicon glyphicon-ok"></span> Logowanie</b></button>
 									</div>
 									<div class="col-sm-6">
 										<button type="button" class="btn btn-danger btn-block"><b><span class="glyphicon glyphicon-remove"></span> Cancel</b></button>
 									</div>
-								</div>							
+								</div>
+								
+							</form>
 						</article>
 					</div>
 				</div>
