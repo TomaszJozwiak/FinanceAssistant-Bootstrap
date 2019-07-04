@@ -62,7 +62,6 @@
 								if (isset($_SESSION['user']))
 								{
 										echo 'Witaj '.$_SESSION['user'].'!';
-										unset($_SESSION['udanarejestracja']);
 								}
 							?>
 						</b></h1>

@@ -62,6 +62,53 @@
 					
 					if ($polaczenie->query("INSERT INTO users VALUES (NULL, '$name', '$password_hash', '$email')"))
 					{
+
+
+						$user_ID_query=$polaczenie->query("SELECT * FROM users WHERE email='$email'");
+						$user_ID_row=$user_ID_query->fetch_assoc();
+						$user_ID=$user_ID_row['id'];
+						$categories=$polaczenie->query("SELECT * FROM expenses_category_default");
+						$row_number=$categories->num_rows;
+						
+
+						
+						$i = 1;
+						while ($i <= $row_number){
+							$category_name_query=$polaczenie->query("SELECT name FROM expenses_category_default WHERE id=$i");
+							$category_row=$category_name_query->fetch_assoc();
+							$category=$category_row['name'];
+							
+							$polaczenie->query("INSERT INTO expenses_category_assigned_to_users VALUES (NULL, '$user_ID', '$category')");
+							$i++;
+						}		
+
+						$incomes_category=$polaczenie->query("SELECT * FROM incomes_category_default");
+						$row_number=$incomes_category->num_rows;
+						
+						$i = 1;
+						while ($i <= $row_number){
+							$category_name_query=$polaczenie->query("SELECT name FROM incomes_category_default WHERE id=$i");
+							$category_row=$category_name_query->fetch_assoc();
+							$category=$category_row['name'];
+							
+							$polaczenie->query("INSERT INTO incomes_category_assigned_to_users VALUES (NULL, '$user_ID', '$category')");
+							$i++;
+						}
+						
+						$payment_method=$polaczenie->query("SELECT * FROM payment_methods_default");
+						$row_number=$payment_method->num_rows;
+						
+						$i = 1;
+						while ($i <= $row_number){
+							$method_name_query=$polaczenie->query("SELECT name FROM payment_methods_default WHERE id=$i");
+							$method_row=$method_name_query->fetch_assoc();
+							$method=$method_row['name'];
+							
+							$polaczenie->query("INSERT INTO payment_methods_assigned_to_users VALUES (NULL, '$user_ID', '$method')");
+							$i++;
+						}
+						
+						
 						$_SESSION['udanarejestracja']=true;
 						header('Location: logowanie.php');
 					}
