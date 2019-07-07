@@ -50,6 +50,8 @@
 							$_SESSION['user'] = $wiersz['username'];
 							$_SESSION['email'] = $wiersz['email'];
 							
+							$_SESSION['logged_user_ID']=$wiersz['id'];
+							
 							unset($_SESSION['blad']);
 							$rezultat->free_result();
 							header('Location: homepage.php');

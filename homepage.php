@@ -1,3 +1,15 @@
+<?php
+
+	session_start();
+	
+	if (!isset($_SESSION['zalogowany']))
+	{
+		header('Location: index.php');
+		exit();
+	}
+	
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -38,11 +50,11 @@
 				<div class="collapse navbar-collapse" id="mainmenu">
 					<ul class="nav nav-pills navbar-center">
 						<li><a href="homepage.php"><span class="glyphicon glyphicon-home"></span> Strona główna </a></li>
-						<li><a href="income.html"><span class="glyphicon glyphicon-plus"></span> Dodaj przychód </a></li>
-						<li><a href="expense.html"><span class="glyphicon glyphicon-minus"></span> Dodaj wydatek </a></li>
-						<li><a href="balance.html"><span class="glyphicon glyphicon-stats"></span> Przeglądaj bilans </a></li>
-						<li><a href="settings.html"><span class="glyphicon glyphicon-wrench"></span> Ustawienia </a></li>
-						<li><a href="index.html"><span class="glyphicon glyphicon-log-out"></span> Wyloguj</a></li>
+						<li><a href="income.php"><span class="glyphicon glyphicon-plus"></span> Dodaj przychód </a></li>
+						<li><a href="expense.php"><span class="glyphicon glyphicon-minus"></span> Dodaj wydatek </a></li>
+						<li><a href="balance.php"><span class="glyphicon glyphicon-stats"></span> Przeglądaj bilans </a></li>
+						<li><a href="settings.php"><span class="glyphicon glyphicon-wrench"></span> Ustawienia </a></li>
+						<li><a href="index.php"><span class="glyphicon glyphicon-log-out"></span> Wyloguj</a></li>
 					</ul>
 				</div>
 			</nav>
@@ -56,9 +68,7 @@
 					</div>
 					<div class="col-sm-5"> 
 
-						</br><h1><b><?php		
-								session_start();
-							
+						</br><h1><b><?php
 								if (isset($_SESSION['user']))
 								{
 										echo 'Witaj '.$_SESSION['user'].'!';

@@ -1,3 +1,15 @@
+<?php
+
+	session_start();
+	
+	if (!isset($_SESSION['zalogowany']))
+	{
+		header('Location: index.php');
+		exit();
+	}
+	
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -22,7 +34,7 @@
 	
 		<header>
 			<div class="jumbotron">
-				<h1><b><a href="index.html"> <img src="img/saving-pig.png"  width="100w"height="100vw" alt="brand-pig" >  FINANCE ASSISTANT </b><i><p>Twoj domowy doradca oszczędzania</p></i></a></h1> 
+				<h1><b><a href="index.php"> <img src="img/saving-pig.png"  width="100w"height="100vw" alt="brand-pig" >  FINANCE ASSISTANT </b><i><p>Twoj domowy doradca oszczędzania</p></i></a></h1> 
 			</div>
 			
 			<nav class="navbar">
@@ -37,12 +49,12 @@
 				</div>
 				<div class="collapse navbar-collapse" id="mainmenu">
 					<ul class="nav nav-pills navbar-center">
-						<li><a href="homepage.html"><span class="glyphicon glyphicon-home"></span> Strona główna </a></li>
-						<li><a href="income.html"><span class="glyphicon glyphicon-plus"></span> Dodaj przychód </a></li>
-						<li><a href="expense.html"><span class="glyphicon glyphicon-minus"></span> Dodaj wydatek </a></li>
-						<li><a href="balance.html"><span class="glyphicon glyphicon-stats"></span> Przeglądaj bilans </a></li>
-						<li><a href="settings.html"><span class="glyphicon glyphicon-wrench"></span> Ustawienia </a></li>
-						<li><a href="index.html"><span class="glyphicon glyphicon-log-out"></span> Wyloguj</a></li>
+						<li><a href="homepage.php"><span class="glyphicon glyphicon-home"></span> Strona główna </a></li>
+						<li><a href="income.php"><span class="glyphicon glyphicon-plus"></span> Dodaj przychód </a></li>
+						<li><a href="expense.php"><span class="glyphicon glyphicon-minus"></span> Dodaj wydatek </a></li>
+						<li><a href="balance.php"><span class="glyphicon glyphicon-stats"></span> Przeglądaj bilans </a></li>
+						<li><a href="settings.php"><span class="glyphicon glyphicon-wrench"></span> Ustawienia </a></li>
+						<li><a href="index.php"><span class="glyphicon glyphicon-log-out"></span> Wyloguj</a></li>
 					</ul>
 				</div>
 			</nav>
@@ -74,19 +86,46 @@
 								
 								<div class="form-group">
 									<label for="payment_method">Kategoria:</label>
-									<div class="radio">
-										<label><input type="radio" value="1" name="category">Wynagrodzenia</label>
-									</div>
-									<div class="radio">
-										<label><input type="radio" value="2" name="category">Odsetki bankowe</label>
-									</div>
-									<div class="radio">
-										<label><input type="radio" value="3" name="category">Sprzedaż na allegro</label>
-									</div>
-									<div class="radio">
-										<label><input type="radio" value="4" name="category">Inne</label>
-									</div>
-								</div>
+									
+									<?php
+									require_once "connect.php";
+									mysqli_report(MYSQLI_REPORT_STRICT);
+									
+									try 
+									{
+										$polaczenie = new mysqli($host, $db_user, $db_password, $db_name);
+										$polaczenie->set_charset("utf8");
+										if ($polaczenie->connect_errno!=0)
+										{
+											throw new Exception(mysqli_connect_errno());
+										}
+										else
+										{
+											
+											$user_ID=$_SESSION['logged_user_ID'];
+											
+												$categories=$polaczenie->query("SELECT name FROM incomes_category_assigned_to_users WHERE user_id='$user_ID'");
+												$row_number=$categories->num_rows;
+												
+												$i = 1;
+												while ($i <= $row_number){
+													$category_row=$categories->fetch_assoc();
+													$category=$category_row['name'];
+													
+													echo '<div class="radio">
+															<label><input type="radio" value="1" name="category">'.$category.'</label>
+															</div>';
+													
+													$i++;
+												}		
+										}
+									}
+									catch(Exception $e)
+									{
+										echo '<span style="color:red;">Błąd serwera! Przepraszamy za niedogodności i prosimy o rejestrację w innym terminie!</span>';
+										echo '<br />Informacja developerska: '.$e;
+									}
+									?>
 							
 								<div class="form-group">
 									<label for="comment">Komentarz:</label>

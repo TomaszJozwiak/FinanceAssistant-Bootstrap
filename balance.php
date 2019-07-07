@@ -1,3 +1,15 @@
+<?php
+
+	session_start();
+	
+	if (!isset($_SESSION['zalogowany']))
+	{
+		header('Location: index.php');
+		exit();
+	}
+	
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -22,7 +34,7 @@
 	
 		<header>
 			<div class="jumbotron">
-				<h1><b><a href="index.html"> <img src="img/saving-pig.png"  width="100w"height="100vw" alt="brand-pig" >  FINANCE ASSISTANT </b><i><p>Twoj domowy doradca oszczędzania</p></i></a></h1> 
+				<h1><b><a href="index.php"> <img src="img/saving-pig.png"  width="100w"height="100vw" alt="brand-pig" >  FINANCE ASSISTANT </b><i><p>Twoj domowy doradca oszczędzania</p></i></a></h1> 
 			</div>
 			
 			<nav class="navbar">
@@ -37,12 +49,12 @@
 				</div>
 				<div class="collapse navbar-collapse" id="mainmenu">
 					<ul class="nav nav-pills navbar-center">
-						<li><a href="homepage.html"><span class="glyphicon glyphicon-home"></span> Strona główna </a></li>
-						<li><a href="income.html"><span class="glyphicon glyphicon-plus"></span> Dodaj przychód </a></li>
-						<li><a href="expense.html"><span class="glyphicon glyphicon-minus"></span> Dodaj wydatek </a></li>
-						<li><a href="balance.html"><span class="glyphicon glyphicon-stats"></span> Przeglądaj bilans </a></li>
-						<li><a href="settings.html"><span class="glyphicon glyphicon-wrench"></span> Ustawienia </a></li>
-						<li><a href="index.html"><span class="glyphicon glyphicon-log-out"></span> Wyloguj</a></li>
+						<li><a href="homepage.php"><span class="glyphicon glyphicon-home"></span> Strona główna </a></li>
+						<li><a href="income.php"><span class="glyphicon glyphicon-plus"></span> Dodaj przychód </a></li>
+						<li><a href="expense.php"><span class="glyphicon glyphicon-minus"></span> Dodaj wydatek </a></li>
+						<li><a href="balance.php"><span class="glyphicon glyphicon-stats"></span> Przeglądaj bilans </a></li>
+						<li><a href="settings.php"><span class="glyphicon glyphicon-wrench"></span> Ustawienia </a></li>
+						<li><a href="index.php"><span class="glyphicon glyphicon-log-out"></span> Wyloguj</a></li>
 					</ul>
 				</div>
 			</nav>
