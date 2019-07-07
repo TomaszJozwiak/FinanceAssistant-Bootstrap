@@ -8,6 +8,61 @@
 		exit();
 	}
 	
+		if (isset($_POST['amount']) & isset($_POST['date']) & isset($_POST['method']) & isset($_POST['category']))
+		{
+			$amount = $_POST['amount'];
+			$date = $_POST['date'];
+			$posted_method = $_POST['method'];
+			$posted_category = $_POST['category'];
+			$user_ID=$_SESSION['logged_user_ID'];
+			
+			if (isset($_POST['comment'])){
+			$comment=$_POST['comment'];
+			}
+			
+			require_once "connect.php";
+			mysqli_report(MYSQLI_REPORT_STRICT);
+		
+			try 
+			{
+				$polaczenie = new mysqli($host, $db_user, $db_password, $db_name);
+				$polaczenie->set_charset("utf8");
+				if ($polaczenie->connect_errno!=0)
+				{
+					throw new Exception(mysqli_connect_errno());
+				}
+				else
+				{
+					$category_id_query = $polaczenie->query("SELECT id FROM expenses_category_assigned_to_users WHERE user_id='$user_ID' AND name='$posted_category'");
+					$category_id_row=$category_id_query->fetch_assoc();
+					$category_id=$category_id_row['id'];
+					
+					$method_id_query = $polaczenie->query("SELECT id FROM payment_methods_assigned_to_users WHERE user_id='$user_ID' AND name='$posted_method'");
+					$method_id_row=$method_id_query->fetch_assoc();
+					$method_id=$method_id_row['id'];
+					
+					if (!$category_id_query) throw new Exception($polaczenie->error);
+					if (!$method_id_query) throw new Exception($polaczenie->error);
+					
+					if (isset($_POST['comment'])){
+						if ($polaczenie->query("INSERT INTO expenses VALUES (NULL, '$user_ID', '$category_id', '$method_id', '$amount', '$date', '$comment')"))
+						$_SESSION['udane_dodanie_wydatku']=true;
+					}
+					
+					else{
+						if ($polaczenie->query("INSERT INTO expenses VALUES (NULL, '$user_ID', '$category_id', '$method_id', '$amount', '$date', NULL)"))
+						$_SESSION['udane_dodanie_wydatku']=true;
+					}
+				}
+			}
+			
+			catch(Exception $e)
+			{
+				echo '<span style="color:red;">Błąd serwera! Przepraszamy za niedogodności i prosimy o rejestrację w innym terminie!</span>';
+				echo '<br />Informacja developerska: '.$e;
+			}
+		}
+	
 ?>
 
 <!DOCTYPE html>
@@ -69,18 +124,28 @@
 												
 							<p>Wpisz poniższe dane, aby dodać wydatek</p></br>
 													
+							<?php					
+								if (isset($_SESSION['udane_dodanie_wydatku']))
+								{
+										echo '<div style="color: limegreen;">'.'Gratulacje, wydatek został dodany'.'</div>';
+										unset($_SESSION['udane_dodanie_wydatku']);
+								}
+							?>			
+			
+							<form method="post">
+			
 								<div class="form-group">
-									<label for="kwota">Kwota:</label>
+									<label for="amount">Kwota:</label>
 									<div class="input-group">
 										<span class="input-group-addon"><i class="glyphicon glyphicon-usd"></i></span>
-										<input id="kwota" type="number" class="form-control" name="kwota" placeholder="Kwota">
+										<input id="amount" type="number" class="form-control" name="amount" placeholder="Kwota">
 									 </div>
 								</div>
 								<div class="form-group">
-									 <label for="data">Data:</label>
+									 <label for="date">Data:</label>
 										<div class="input-group">
 											<span class="input-group-addon"><i class="glyphicon glyphicon-hourglass"></i></span>
-											<input id="data" type="date" class="form-control" name="data" placeholder="Data">
+											<input id="date" type="date" class="form-control" name="date" placeholder="Data">
 										</div>
 								</div>
 								
@@ -101,9 +166,7 @@
 										}
 										else
 										{
-											
 											$user_ID=$_SESSION['logged_user_ID'];
-											
 											$method_name_query=$polaczenie->query("SELECT name FROM payment_methods_assigned_to_users WHERE user_id='$user_ID'");
 											$row_number=$method_name_query->num_rows;
 											
@@ -113,7 +176,7 @@
 												$method=$method_row['name'];
 												
 												echo '<div class="radio">
-														<label><input type="radio" value="1" name="payment_method">'.$method.'</label>
+														<label><input type="radio" value="'.$method.'" name="method">'.$method.'</label>
 														</div>';
 												
 												$i++;
@@ -130,9 +193,12 @@
 								
 								<div class="form-group">
 									<label for="selection_expense">Kategoria:</label>
-									<select class="form-control" id="selection_expense">
+									<select class="form-control" name="category">
 									
-									<?php	
+									<?php
+
+									require_once "connect.php";
+									mysqli_report(MYSQLI_REPORT_STRICT);									
 									try 
 									{
 										if ($polaczenie->connect_errno!=0)
@@ -141,15 +207,15 @@
 										}
 										else
 										{
-											$cathegory_name_query=$polaczenie->query("SELECT name FROM expenses_category_assigned_to_users WHERE user_id='$user_ID'");
-											$row_number=$cathegory_name_query->num_rows;
+											$category_name_query=$polaczenie->query("SELECT name FROM expenses_category_assigned_to_users WHERE user_id='$user_ID'");
+											$row_number=$category_name_query->num_rows;
 											
 											$i = 1;
 											while ($i <= $row_number){
-												$cathegory_row=$cathegory_name_query->fetch_assoc();
-												$cathegory=$cathegory_row['name'];
+												$category_row=$category_name_query->fetch_assoc();
+												$category=$category_row['name'];
 												
-												echo '<option>'.$cathegory.'</option>';
+												echo '<option value="'.$category.'">'.$category.'</option>';
 												
 												$i++;
 												}		
@@ -167,18 +233,19 @@
 							
 								<div class="form-group">
 									<label for="comment">Komentarz:</label>
-									<textarea class="form-control" rows="3" id="comment"></textarea>
+									<textarea class="form-control" rows="3" id="comment" name="comment"></textarea>
 								</div>
 												
 								<div class="form-group row d-inline-block">
 									<div class="col-sm-6">
-										<button type="button" class="btn btn-success btn-block"><b><span class="glyphicon glyphicon-ok"></span> Dodaj</b></button>
+										<button type="submit" class="btn btn-success btn-block"><b><span class="glyphicon glyphicon-ok"></span> Dodaj</b></button>
 									</div>
 									<div class="col-sm-6">
 										<button type="button" class="btn btn-danger btn-block"><b><span class="glyphicon glyphicon-remove"></span> Cancel</b></button>
 									</div>
 								</div>
-														
+							</form>			
+										
 						</article>
 					</div>
 				</div>
