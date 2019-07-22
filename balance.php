@@ -61,18 +61,69 @@
 		</header>
 	  
 		 <main>
-			<div class="container">    
-				<div class="row text-center">
-					<div class="col-sm-6 col-sm-offset-3"> 
-						<article>
-							<h1><b>Coming soon</b></h1>	
-												
-
-						</article>
-					</div>
+			<div class="container"> 
+				<article>			
+					<div class="row text-center">
+						<div class="col-sm-8 col-sm-offset-2"> 
+							<h1><b>Bilans</b></h1></br>
+							
+							<div class="row income">
+								
+								<div class="col-sm-1" style="margin-top: 20px;">
+									<div style="font-size: 40px;"><span class="glyphicon glyphicon-plus"></span></div>
+								</div>
+											
+								<div class="col-sm-2" style="margin-top: 27px;">
+									<div style="font-size: 25px;"><b>5000.00</b></div>
+								</div> 
+								
+								<div class="col-sm-6">
+									<div  style="font-size: 25px; margin-top: 15px;"><b>Wynagrodzenie</b></div>
+									<div  style="font-size: 15px; margin-top: 5px;">Za sprzedanie szafy</div>
+								</div> 
+								
+								<div class="col-sm-2" style="margin-top: 30px;">
+									<div>01.02.2019</div>
+								</div> 
+								
+								<div class="col-sm-1" style="margin-top: 15px;">
+									<span class="glyphicon glyphicon-pencil"></span>
+									<span class="glyphicon glyphicon-trash"></span>
+								</div>
+							
+							</div>	
+							
+							<div class="row expense">
+								
+								<div class="col-sm-1" style="margin-top: 20px;">
+									<div style="font-size: 40px;"><span class="glyphicon glyphicon-minus"></span></div>
+								</div>
+											
+								<div class="col-sm-2" style="margin-top: 27px;">
+									<div style="font-size: 25px;"><b>69.00</b></div>
+								</div> 
+								
+								<div class="col-sm-6">
+									<div  style="font-size: 25px; margin-top: 15px;"><b>Zakupy Kaśki</b></div>
+									<div  style="font-size: 15px; margin-top: 5px;">Kupno sukienek w H & M</div>
+								</div> 
+								
+								<div class="col-sm-2" style="margin-top: 30px;">
+									<div>01.02.2019</div>
+								</div> 
+								
+								<div class="col-sm-1" style="margin-top: 15px;">
+									<span class="glyphicon glyphicon-pencil"></span>
+									<span class="glyphicon glyphicon-trash"></span>
+								</div>
+							
+							</div>
+		
+						</div> 
+					
+					</article>
 				</div>
-			</div>
-		</main>
+			</main>
 
 		<script src="finance_assistant.js"></script>
 	</body>
