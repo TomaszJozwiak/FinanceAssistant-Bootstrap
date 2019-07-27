@@ -55,6 +55,14 @@ body
 	border-radius: 25px;
 }
 
+.calendar_button
+{
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+
+
 .jumbotron a
 {
 	text-decoration: none;

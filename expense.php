@@ -138,7 +138,7 @@
 									<label for="amount">Kwota:</label>
 									<div class="input-group">
 										<span class="input-group-addon"><i class="glyphicon glyphicon-usd"></i></span>
-										<input id="amount" type="number" class="form-control" name="amount" placeholder="Kwota">
+										<input id="amount" type="number" step="0.01" class="form-control" name="amount" placeholder="Kwota">
 									 </div>
 								</div>
 								<div class="form-group">

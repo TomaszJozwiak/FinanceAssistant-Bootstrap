@@ -53,7 +53,7 @@
 			
 			catch(Exception $e)
 			{
-				echo '<span style="color:red;">Błąd serwera! Przepraszamy za niedogodności i prosimy o rejestrację w innym terminie!</span>';
+				echo '<span style="color:red;">Błąd serwera! Przepraszamy za niedogodności i prosimy o akcję w innym terminie!</span>';
 				echo '<br />Informacja developerska: '.$e;
 			}
 		}
@@ -132,7 +132,7 @@
 										<label for="kwota">Kwota:</label>
 										<div class="input-group">
 											<span class="input-group-addon"><i class="glyphicon glyphicon-usd"></i></span>
-											<input id="amount" type="number" class="form-control" name="amount" placeholder="Kwota">
+											<input id="amount" type="number" step="0.01" class="form-control" name="amount" placeholder="Kwota">
 										 </div>
 									</div>
 									<div class="form-group">
@@ -180,7 +180,7 @@
 										}
 										catch(Exception $e)
 										{
-											echo '<span style="color:red;">Błąd serwera! Przepraszamy za niedogodności i prosimy o rejestrację w innym terminie!</span>';
+											echo '<span style="color:red;">Błąd serwera! Przepraszamy za niedogodności i prosimy o akcję w innym terminie!</span>';
 											echo '<br />Informacja developerska: '.$e;
 										}
 										?>

@@ -27,6 +27,7 @@
 		try 
 		{
 			$polaczenie = new mysqli($host, $db_user, $db_password, $db_name);
+			$polaczenie->set_charset("utf8");
 			
 			if ($polaczenie->connect_errno!=0)
 			{
