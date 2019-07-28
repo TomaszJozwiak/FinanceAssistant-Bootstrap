@@ -9,6 +9,9 @@
 	}
 	
 	$balance = 0;
+	$array_category = [];
+	$array_category_amount = [];
+	$category_counter = 0;
 	$chosen_date="current_month";
 	$data_correct=false;
 	$date_period=strtotime(date("Y-m"));
@@ -36,6 +39,7 @@
 	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 	  <link rel="stylesheet" href="main.css">
 	  
+	  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"> </script>
 	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 	  <link href="https://fonts.googleapis.com/css?family=Ubuntu:300i,400,700" rel="stylesheet">
@@ -316,8 +320,6 @@
 												$data_correct=true;
 										}
 										
-				
-										
 										if($data_correct == true)
 										{
 											echo '
@@ -362,6 +364,30 @@
 
 											$data_correct=false;
 											$balance = $balance - $amount;
+											$category_exist = false;
+											
+											$k = 0;
+											
+											while ($k <= $category_counter && $k != 0)
+											{
+												if ($array_category[$k] == $category)
+												{
+													$category_exist = true;
+													$array_category_amount[$k] = $array_category_amount[$k] + $amount;
+													
+													if ($category_exist = true)
+													{
+														break;
+													}
+												}
+												$k++;
+											}
+											if ($category_exist == false)
+											{
+												array_push($array_category, $category);
+												array_push($array_category_amount, $amount);
+												$category_counter++;
+											}
 										}
 										$i++;
 									}	
@@ -377,20 +403,51 @@
 								{
 									echo '<div style="color: red; font-size: 25px;"><b>Czas zacząć oszczędzać</b></div>';
 								}	
-								
-								
 							}
 							catch(Exception $e)
 							{
 								echo '<span style="color:red;">Błąd serwera! Przepraszamy za niedogodności i prosimy o akcję w innym terminie!</span>';
 								echo '<br />Informacja developerska: '.$e;
+							}	
+							echo "</br>";
+											
+							$data_points = array();
+							$k = 0;
+							
+							while ($k < $category_counter)
+							{
+								$point = array("label" => $array_category[$k] , "y" => $array_category_amount[$k]);
+								array_push($data_points, $point);
+								$k++;
 							}
-							?>
+						?>
+							
+						<script>
+						window.onload = function() {
+						 
+						var chart = new CanvasJS.Chart("chartContainer", {
+							animationEnabled: true,
+							title: {
+								text: "Kategorie wydatków"
+							},
+							data: [{
+								type: "pie",
+								yValueFormatString: "#,##0.00\"%\"",
+								indexLabel: "{label} ({y})",
+								dataPoints: <?php echo json_encode($data_points, JSON_NUMERIC_CHECK); ?>
+							}]
+						});
+						chart.render();
+						 
+						}
+						</script>
+							
+						<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+
 					</div> 
 				</article>
 			</div>
 		</main>
-
 		<script src="finance_assistant.js"></script>
 	</body>
 </html>
