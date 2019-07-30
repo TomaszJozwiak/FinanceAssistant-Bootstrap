@@ -29,7 +29,7 @@
 <html lang="en">
 	<head>
 	
-	  <title>Bootstrap Example</title>
+	  <title>Finance Assistant</title>
 	  <meta charset="utf-8">
 	  <meta name="viewport" content="width=device-width, initial-scale=1">
 	  <meta name="description" content="Web application that will help you plan your home budget">
@@ -50,7 +50,7 @@
 	
 		<header>
 			<div class="jumbotron">
-				<h1><b><a href="index.php"> <img src="img/saving-pig.png"  width="100w"height="100vw" alt="brand-pig" >  FINANCE ASSISTANT </b><i><p>Twoj domowy doradca oszczędzania</p></i></a></h1> 
+				<h1><b><a href="homepage.php"> <img src="img/saving-pig.png"  width="100w"height="100vw" alt="brand-pig" >  FINANCE ASSISTANT </b><i><p>Twoj domowy doradca oszczędzania</p></i></a></h1> 
 			</div>
 			
 			<nav class="navbar">
@@ -368,7 +368,7 @@
 											
 											$k = 0;
 											
-											while ($k <= $category_counter && $k != 0)
+											while ($k <= $category_counter && isset ($array_category[$k]))
 											{
 												if ($array_category[$k] == $category)
 												{
@@ -423,27 +423,30 @@
 						?>
 							
 						<script>
-						window.onload = function() {
-						 
-						var chart = new CanvasJS.Chart("chartContainer", {
-							animationEnabled: true,
-							title: {
-								text: "Kategorie wydatków"
-							},
-							data: [{
-								type: "pie",
-								yValueFormatString: "#,##0.00\"%\"",
-								indexLabel: "{label} ({y})",
-								dataPoints: <?php echo json_encode($data_points, JSON_NUMERIC_CHECK); ?>
-							}]
-						});
-						chart.render();
-						 
-						}
+							window.onload = function() 
+							{
+								var chart = new CanvasJS.Chart("chartContainer", 
+								{
+										animationEnabled: true,
+										title: {
+											text: "Kategorie wydatków"
+										},
+										data: [{
+											type: "pie",
+											yValueFormatString: "#,##0.00\" PLN\"",
+											indexLabel: "{label} ({y})",
+											dataPoints: <?php echo json_encode($data_points, JSON_NUMERIC_CHECK); ?>
+										}]
+								});
+								chart.render();
+							}
 						</script>
 							
-						<div id="chartContainer" style="height: 370px; width: 100%;"></div>
-
+						<?php if ($category_counter > 0)
+						{
+							echo '<div id="chartContainer" style="height: 370px; width: 100%;"></div>';
+						}?>
+						
 					</div> 
 				</article>
 			</div>

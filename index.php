@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 	
-	  <title>Bootstrap Example</title>
+	  <title>Finance Assistant</title>
 	  <meta charset="utf-8">
 	  <meta name="viewport" content="width=device-width, initial-scale=1">
 	  <meta name="description" content="Web application that will help you plan your home budget">

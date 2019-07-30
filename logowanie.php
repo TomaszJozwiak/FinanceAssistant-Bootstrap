@@ -86,7 +86,7 @@
 <html lang="en">
 	<head>
 	
-	  <title>Bootstrap Example</title>
+	  <title>Finance Assistant</title>
 	  <meta charset="utf-8">
 	  <meta name="viewport" content="width=device-width, initial-scale=1">
 	  <meta name="description" content="Web application that will help you plan your home budget">
@@ -180,7 +180,7 @@
 										<button type="submit" class="btn btn-success btn-block"><b><span class="glyphicon glyphicon-ok"></span> Logowanie</b></button>
 									</div>
 									<div class="col-sm-6">
-										<button type="button" class="btn btn-danger btn-block"><b><span class="glyphicon glyphicon-remove"></span> Cancel</b></button>
+										<a href="index.php" class="nounderline"><button type="button" class="btn btn-danger btn-block"><b><span class="glyphicon glyphicon-remove"></span> Cancel</b></button></a>
 									</div>
 								</div>
 								

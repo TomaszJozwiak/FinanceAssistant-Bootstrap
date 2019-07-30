@@ -69,7 +69,7 @@
 <html lang="en">
 	<head>
 	
-	  <title>Bootstrap Example</title>
+	  <title>Finance Assistant</title>
 	  <meta charset="utf-8">
 	  <meta name="viewport" content="width=device-width, initial-scale=1">
 	  <meta name="description" content="Web application that will help you plan your home budget">
@@ -89,7 +89,7 @@
 	
 		<header>
 			<div class="jumbotron">
-				<h1><b><a href="index.php"> <img src="img/saving-pig.png"  width="100w"height="100vw" alt="brand-pig" >  FINANCE ASSISTANT </b><i><p>Twoj domowy doradca oszczędzania</p></i></a></h1> 
+				<h1><b><a href="homepage.php"> <img src="img/saving-pig.png"  width="100w"height="100vw" alt="brand-pig" >  FINANCE ASSISTANT </b><i><p>Twoj domowy doradca oszczędzania</p></i></a></h1> 
 			</div>
 			
 			<nav class="navbar">
@@ -241,7 +241,7 @@
 										<button type="submit" class="btn btn-success btn-block"><b><span class="glyphicon glyphicon-ok"></span> Dodaj</b></button>
 									</div>
 									<div class="col-sm-6">
-										<button type="button" class="btn btn-danger btn-block"><b><span class="glyphicon glyphicon-remove"></span> Cancel</b></button>
+										<a href="homepage.php" class="nounderline"><button type="button" class="btn btn-danger btn-block"><b><span class="glyphicon glyphicon-remove"></span> Cancel</b></button></a>
 									</div>
 								</div>
 							</form>			
