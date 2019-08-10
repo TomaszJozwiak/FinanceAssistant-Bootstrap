@@ -4,7 +4,7 @@
 	
 	if (isset($_POST['email']))
 	{
-		$wszystko_OK=true;
+		$data_correct=true;
 		
 		$name = $_POST['name'];
 		
@@ -13,7 +13,7 @@
 		
 		if ((filter_var($emailB, FILTER_VALIDATE_EMAIL)==false) || ($emailB!=$email))
 		{
-			$wszystko_OK=false;
+			$data_correct=false;
 			$_SESSION['e_email']="Podaj poprawny adres e-mail!";
 		}
 		
@@ -22,13 +22,13 @@
 		
 		if ((strlen($password)<6) || (strlen($password)>20))
 		{
-			$wszystko_OK=false;
+			$data_correct=false;
 			$_SESSION['e_password']="Hasło musi posiadać od 6 do 20 znaków!";
 		}
 		
 		if ($password!=$repassword)
 		{
-			$wszystko_OK=false;
+			$data_correct=false;
 			$_SESSION['e_password']="Podane hasła nie są identyczne!";
 		}	
 
@@ -39,87 +39,86 @@
 	
 		try 
 		{
-			$polaczenie = new mysqli($host, $db_user, $db_password, $db_name);
-			$polaczenie->set_charset("utf8");
-			if ($polaczenie->connect_errno!=0)
+			$connection = new mysqli($host, $db_user, $db_password, $db_name);
+			$connection->set_charset("utf8");
+			if ($connection->connect_errno!=0)
 			{
 				throw new Exception(mysqli_connect_errno());
 			}
 			else
 			{
-				$rezultat = $polaczenie->query("SELECT id FROM users WHERE email='$email'");
+				$result = $connection->query("SELECT id FROM users WHERE email='$email'");
 				
-				if (!$rezultat) throw new Exception($polaczenie->error);
+				if (!$result) throw new Exception($connection->error);
 				
-				$ile_takich_maili = $rezultat->num_rows;
-				if($ile_takich_maili>0)
+				$email_counter = $result->num_rows;
+				if($email_counter>0)
 				{
-					$wszystko_OK=false;
+					$data_correct=false;
 					$_SESSION['e_email']="Istnieje już konto przypisane do tego adresu e-mail!";
 				}		
 
-				if ($wszystko_OK==true)
+				if ($data_correct==true)
 				{
 					
-					if ($polaczenie->query("INSERT INTO users VALUES (NULL, '$name', '$password_hash', '$email')"))
+					if ($connection->query("INSERT INTO users VALUES (NULL, '$name', '$password_hash', '$email')"))
 					{
 
 
-						$user_ID_query=$polaczenie->query("SELECT * FROM users WHERE email='$email'");
+						$user_ID_query=$connection->query("SELECT * FROM users WHERE email='$email'");
 						$user_ID_row=$user_ID_query->fetch_assoc();
 						$user_ID=$user_ID_row['id'];
-						$categories=$polaczenie->query("SELECT * FROM expenses_category_default");
+						$categories=$connection->query("SELECT * FROM expenses_category_default");
 						$row_number=$categories->num_rows;
 						
 
 						
 						$i = 1;
 						while ($i <= $row_number){
-							$category_name_query=$polaczenie->query("SELECT name FROM expenses_category_default WHERE id=$i");
+							$category_name_query=$connection->query("SELECT name FROM expenses_category_default WHERE id=$i");
 							$category_row=$category_name_query->fetch_assoc();
 							$category=$category_row['name'];
 							
-							$polaczenie->query("INSERT INTO expenses_category_assigned_to_users VALUES (NULL, '$user_ID', '$category')");
+							$connection->query("INSERT INTO expenses_category_assigned_to_users VALUES (NULL, '$user_ID', '$category')");
 							$i++;
 						}		
 
-						$incomes_category=$polaczenie->query("SELECT * FROM incomes_category_default");
+						$incomes_category=$connection->query("SELECT * FROM incomes_category_default");
 						$row_number=$incomes_category->num_rows;
 						
 						$i = 1;
 						while ($i <= $row_number){
-							$category_name_query=$polaczenie->query("SELECT name FROM incomes_category_default WHERE id=$i");
+							$category_name_query=$connection->query("SELECT name FROM incomes_category_default WHERE id=$i");
 							$category_row=$category_name_query->fetch_assoc();
 							$category=$category_row['name'];
 							
-							$polaczenie->query("INSERT INTO incomes_category_assigned_to_users VALUES (NULL, '$user_ID', '$category')");
+							$connection->query("INSERT INTO incomes_category_assigned_to_users VALUES (NULL, '$user_ID', '$category')");
 							$i++;
 						}
 						
-						$payment_method=$polaczenie->query("SELECT * FROM payment_methods_default");
+						$payment_method=$connection->query("SELECT * FROM payment_methods_default");
 						$row_number=$payment_method->num_rows;
 						
 						$i = 1;
 						while ($i <= $row_number){
-							$method_name_query=$polaczenie->query("SELECT name FROM payment_methods_default WHERE id=$i");
+							$method_name_query=$connection->query("SELECT name FROM payment_methods_default WHERE id=$i");
 							$method_row=$method_name_query->fetch_assoc();
 							$method=$method_row['name'];
 							
-							$polaczenie->query("INSERT INTO payment_methods_assigned_to_users VALUES (NULL, '$user_ID', '$method')");
+							$connection->query("INSERT INTO payment_methods_assigned_to_users VALUES (NULL, '$user_ID', '$method')");
 							$i++;
 						}
 						
-						
-						$_SESSION['udanarejestracja']=true;
-						header('Location: logowanie.php');
+						$_SESSION['successful_registration']=true;
+						header('Location: login.php');
 					}
 					else
 					{
-						throw new Exception($polaczenie->error);
+						throw new Exception($connection->error);
 					}
 					
 				}
-				$polaczenie->close();
+				$connection->close();
 			}
 		}
 		catch(Exception $e)
@@ -169,8 +168,8 @@
 					</div>
 					<div class="collapse navbar-collapse" id="mainmenu">
 						<ul class="nav nav-pills navbar-center">
-							<li><a href="logowanie.php"><span class="glyphicon glyphicon-log-in"></span> Logowanie </a></li>
-							<li><a href="rejestracja.php"><span class="glyphicon glyphicon-hand-right"></span> Rejestracja</a></li>
+							<li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Logowanie </a></li>
+							<li><a href="registration.php"><span class="glyphicon glyphicon-hand-right"></span> Rejestracja</a></li>
 						</ul>
 					</div>
 				</nav>

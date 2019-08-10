@@ -2,7 +2,7 @@
 
 	session_start();
 	
-	if (!isset($_SESSION['zalogowany']))
+	if (!isset($_SESSION['loged_in']))
 	{
 		header('Location: index.php');
 		exit();
@@ -54,7 +54,7 @@
 						<li><a href="expense.php"><span class="glyphicon glyphicon-minus"></span> Dodaj wydatek </a></li>
 						<li><a href="balance.php"><span class="glyphicon glyphicon-stats"></span> Przeglądaj bilans </a></li>
 						<li><a href="settings.php"><span class="glyphicon glyphicon-wrench"></span> Ustawienia </a></li>
-						<li><a href="index.php"><span class="glyphicon glyphicon-log-out"></span> Wyloguj</a></li>
+						<li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Wyloguj</a></li>
 					</ul>
 				</div>
 			</nav>

@@ -1,3 +1,16 @@
+<?php
+
+	session_start();
+	
+	if ((isset($_SESSION['loged_in'])) && ($_SESSION['loged_in']==true))
+	{
+		header('Location: homepage.php');
+		exit();
+	}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -37,8 +50,8 @@
 				</div>
 				<div class="collapse navbar-collapse" id="mainmenu">
 					<ul class="nav nav-pills navbar-center">
-						<li><a href="logowanie.php"><span class="glyphicon glyphicon-log-in"></span> Logowanie </a></li>
-						<li><a href="rejestracja.php"><span class="glyphicon glyphicon-hand-right"></span> Rejestracja</a></li>
+						<li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Logowanie </a></li>
+						<li><a href="registration.php"><span class="glyphicon glyphicon-hand-right"></span> Rejestracja</a></li>
 					</ul>
 				</div>
 			</nav>
@@ -57,10 +70,10 @@
 					<div class="col-sm-5"> 
 						<img src="img/swinka2.jpg" width="100%"height="100%" class="img-fluid" alt="pig">
 						<b>Nie masz jeszcze konta?</b> 
-						<a href="rejestracja.php" class="nounderline"><button type="button" class="btn btn-warning btn-block custom-btn"><b><span class="glyphicon glyphicon-hand-right"></span> Rejestracja</b></button></a>
+						<a href="registration.php" class="nounderline"><button type="button" class="btn btn-warning btn-block custom-btn"><b><span class="glyphicon glyphicon-hand-right"></span> Rejestracja</b></button></a>
 						<br/>
 						<b>Posiadasz konto?</b>
-						<a href="logowanie.php" class="nounderline"><button type="button" class="btn btn-warning btn-block custom-btn"><b> <span class="glyphicon glyphicon-log-in"></span> Logowanie</b></button></a>
+						<a href="login.php" class="nounderline"><button type="button" class="btn btn-warning btn-block custom-btn"><b> <span class="glyphicon glyphicon-log-in"></span> Logowanie</b></button></a>
 					</div>
 				</div>
 			</div>

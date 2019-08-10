@@ -11,13 +11,13 @@
 		
 		if ((filter_var($emailB, FILTER_VALIDATE_EMAIL)==false) || ($emailB!=$email))
 		{
-			$wszystko_OK=false;
+			$data_correct=false;
 			$_SESSION['e_email']="Podaj poprawny adres e-mail!";
 		}
 
 		if ((strlen($password)<6) || (strlen($password)>20))
 			{
-				$wszystko_OK=false;
+				$data_correct=false;
 				$_SESSION['e_password']="Hasło musi posiadać od 6 do 20 znaków!";
 			}
 
@@ -26,35 +26,35 @@
 					
 		try 
 		{
-			$polaczenie = new mysqli($host, $db_user, $db_password, $db_name);
-			$polaczenie->set_charset("utf8");
+			$connection = new mysqli($host, $db_user, $db_password, $db_name);
+			$connection->set_charset("utf8");
 			
-			if ($polaczenie->connect_errno!=0)
+			if ($connection->connect_errno!=0)
 			{
 				throw new Exception(mysqli_connect_errno());
 			}
 			else
 			{
-				if ($rezultat = $polaczenie->query(
+				if ($result = $connection->query(
 				sprintf("SELECT * FROM users WHERE email='%s'",
-				mysqli_real_escape_string($polaczenie,$email))))
+				mysqli_real_escape_string($connection,$email))))
 				{
-					$users_number = $rezultat->num_rows;
+					$users_number = $result->num_rows;
 					if($users_number>0)
 					{
-						$wiersz = $rezultat->fetch_assoc();
+						$row = $result->fetch_assoc();
 						
-						if (password_verify($password, $wiersz['password']))
+						if (password_verify($password, $row['password']))
 						{
-							$_SESSION['zalogowany'] = true;
-							$_SESSION['id'] = $wiersz['id'];
-							$_SESSION['user'] = $wiersz['username'];
-							$_SESSION['email'] = $wiersz['email'];
+							$_SESSION['loged_in'] = true;
+							$_SESSION['id'] = $row['id'];
+							$_SESSION['user'] = $row['username'];
+							$_SESSION['email'] = $row['email'];
 							
-							$_SESSION['logged_user_ID']=$wiersz['id'];
+							$_SESSION['logged_user_ID']=$row['id'];
 							
 							unset($_SESSION['blad']);
-							$rezultat->free_result();
+							$result->free_result();
 							header('Location: homepage.php');
 						}
 						else 
@@ -69,9 +69,9 @@
 				}
 				else
 				{
-					throw new Exception($polaczenie->error);
+					throw new Exception($connection->error);
 				}
-				$polaczenie->close();
+				$connection->close();
 			}
 		}
 		catch(Exception $e)
@@ -121,8 +121,8 @@
 				</div>
 				<div class="collapse navbar-collapse" id="mainmenu">
 					<ul class="nav nav-pills navbar-center">
-						<li><a href="logowanie.php"><span class="glyphicon glyphicon-log-in"></span> Logowanie </a></li>
-						<li><a href="rejestracja.php"><span class="glyphicon glyphicon-hand-right"></span> Rejestracja</a></li>
+						<li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Logowanie </a></li>
+						<li><a href="registration.php"><span class="glyphicon glyphicon-hand-right"></span> Rejestracja</a></li>
 					</ul>
 				</div>
 			</nav>
@@ -136,10 +136,10 @@
 							<h1><b>Logowanie</b></h1>	
 							
 								<?php					
-									if (isset($_SESSION['udanarejestracja']))
+									if (isset($_SESSION['successful_registration']))
 									{
 											echo '<div style="color: limegreen;">'.'Gratulacje, rejestracja zakończyła się sukcesem'.'</div>';
-											unset($_SESSION['udanarejestracja']);
+											unset($_SESSION['successful_registration']);
 									}
 								?>
 												

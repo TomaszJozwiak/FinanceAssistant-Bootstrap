@@ -2,7 +2,7 @@
 
 	session_start();
 	
-	if (!isset($_SESSION['zalogowany']))
+	if (!isset($_SESSION['loged_in']))
 	{
 		header('Location: index.php');
 		exit();
@@ -70,7 +70,7 @@
 						<li><a href="expense.php"><span class="glyphicon glyphicon-minus"></span> Dodaj wydatek </a></li>
 						<li><a href="balance.php"><span class="glyphicon glyphicon-stats"></span> Przeglądaj bilans </a></li>
 						<li><a href="settings.php"><span class="glyphicon glyphicon-wrench"></span> Ustawienia </a></li>
-						<li><a href="index.php"><span class="glyphicon glyphicon-log-out"></span> Wyloguj</a></li>
+						<li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Wyloguj</a></li>
 					</ul>
 				</div>
 			</nav> 
@@ -166,16 +166,16 @@
 								
 							try 
 							{
-								$polaczenie = new mysqli($host, $db_user, $db_password, $db_name);
-								$polaczenie->set_charset("utf8");
-								if ($polaczenie->connect_errno!=0)
+								$connection = new mysqli($host, $db_user, $db_password, $db_name);
+								$connection->set_charset("utf8");
+								if ($connection->connect_errno!=0)
 								{
 									throw new Exception(mysqli_connect_errno());
 								}
 								else
 								{
 									$user_ID=$_SESSION['logged_user_ID'];				
-									$date_income_query=$polaczenie->query("SELECT * FROM incomes WHERE user_id='$user_ID' ORDER BY date_of_income ASC");
+									$date_income_query=$connection->query("SELECT * FROM incomes WHERE user_id='$user_ID' ORDER BY date_of_income ASC");
 									$row_number=$date_income_query->num_rows;
 									
 									$i = 1;
@@ -184,7 +184,7 @@
 										$single_row=$date_income_query->fetch_assoc();
 										$amount=$single_row['amount'];
 										$category_id=$single_row['income_category_assigned_to_user_id'];
-										$category_query=$polaczenie->query("SELECT name FROM incomes_category_assigned_to_users WHERE id='$category_id'");
+										$category_query=$connection->query("SELECT name FROM incomes_category_assigned_to_users WHERE id='$category_id'");
 										$single_category_row=$category_query->fetch_assoc();
 										$category=$single_category_row['name'];									
 										$date_of_income=$single_row['date_of_income'];
@@ -266,7 +266,7 @@
 									}	
 									unset($_SESSION['calendar_menu']);
 									
-									$date_expense_query=$polaczenie->query("SELECT * FROM expenses WHERE user_id='$user_ID' ORDER BY date_of_expense ASC");
+									$date_expense_query=$connection->query("SELECT * FROM expenses WHERE user_id='$user_ID' ORDER BY date_of_expense ASC");
 									$row_number=$date_expense_query->num_rows;
 									
 									$i = 1;
@@ -277,12 +277,12 @@
 										$amount=$single_row['amount'];
 										
 										$category_id=$single_row['expense_category_assigned_to_user_id'];
-										$category_query=$polaczenie->query("SELECT name FROM expenses_category_assigned_to_users WHERE id='$category_id'");
+										$category_query=$connection->query("SELECT name FROM expenses_category_assigned_to_users WHERE id='$category_id'");
 										$single_category_row=$category_query->fetch_assoc();
 										$category=$single_category_row['name'];
 										
 										$payment_method_id=$single_row['payment_method_assigned_to_user_id'];
-										$method_query=$polaczenie->query("SELECT name FROM payment_methods_assigned_to_users WHERE id='$payment_method_id'");
+										$method_query=$connection->query("SELECT name FROM payment_methods_assigned_to_users WHERE id='$payment_method_id'");
 										$single_method_row=$method_query->fetch_assoc();
 										$method=$single_method_row['name'];
 										
